@@ -4,23 +4,30 @@
 </script>
 
 <div class="bigBox">
-  <h2>
-    {title}
-  </h2>
+  <div class="titleBox">
+    <h2>
+      {title}
+    </h2>
+  </div>
   <div class="subtitlesBox">
     {#each subtitles as st}
-      <p>{st}</p>
+      <a href={st.link}>{st.name}</a>
     {/each}
   </div>
 </div>
 
-<style>
+<style lang="scss">
   .bigBox {
+    min-height: 15rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content:space-between;
     align-items: end;
-    outline: 1px solid black;
+    margin-bottom: 10rem;
+  }
+
+  .titleBox{
+    max-width: 12.5rem;
   }
 
   h2 {
@@ -28,24 +35,26 @@
     font-size: 1.875rem;
     font-style: italic;
     font-weight: 500;
+    text-align: right;
   }
 
-  p {
-    margin: 0.5rem 0;
+  a {
     font-family: "kallisto", sans-serif;
     font-size: 1.125rem;
     font-style: normal;
     font-weight: 300;
+    text-decoration: none;
+    color: $primary;
   }
 
-  p:hover {
+  a:hover {
     font-weight: 700;
   }
 
   .subtitlesBox {
     display: flex;
     flex-direction: column;
-    align-items: end;
-    margin-top: 3.12rem;
+    align-items: flex-end;
+    gap: 0.5rem;
   }
 </style>

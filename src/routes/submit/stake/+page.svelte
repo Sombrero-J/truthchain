@@ -2,4 +2,4 @@
 
 </script>
 
-<slot></slot>
+<p>the stake</p>

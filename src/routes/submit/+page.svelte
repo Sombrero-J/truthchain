@@ -1,11 +1,8 @@
 <script>
-
+    import InputField from "../../lib/inputField.svelte";
 </script>
 
-<div>
-    <p>Content Submissions</p>
-</div>
+<InputField />
 
-<style>
-    
+<style>    
 </style>

@@ -1,9 +1,6 @@
 <script>
-
+    import HomeButton from "../lib/homeButton.svelte";
 </script>
 
-<a href="/submit">Upload A Content</a>
-
-<style>
-    
-</style>
+<HomeButton />
+<a href="/submit">Submit A Content</a>
