@@ -17,9 +17,4 @@
     border-radius: 0.5rem;
     border: 1px solid $secondary;
   }
-
-  svg {
-    max-width: 400px;
-    display: block;
-  }
 </style>
