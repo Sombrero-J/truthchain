@@ -21,12 +21,12 @@
     min-height: 15rem;
     display: flex;
     flex-direction: column;
-    justify-content:space-between;
+    justify-content: space-between;
     align-items: end;
     margin-bottom: 10rem;
   }
 
-  .titleBox{
+  .titleBox {
     max-width: 12.5rem;
   }
 
@@ -48,7 +48,7 @@
   }
 
   a:hover {
-    font-weight: 700;
+    text-shadow: 0 0 1px currentColor; // Adjust color and spread as needed
   }
 
   .subtitlesBox {
