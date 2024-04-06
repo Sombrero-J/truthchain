@@ -1,22 +1,17 @@
 <script>
   import InputField from "$lib/inputField.svelte";
-  import { getContext } from "svelte";
   import TcButton from "$lib/tcButton.svelte";
-  import ArrowRight from "$lib/static/arrowRight.svelte";
+  import {contentSubmission} from "../../formStore.js"
 
-  let stake = "";
+  let stake = 0;
 
   function handleSubmit() {
-    const data = {
-      stake: stake,
-    };
-    console.log(data);
+    contentSubmission.update((data) => {
+      data.stake = stake;
+      return data;
+    });
+    console.log($contentSubmission);
   }
-
-  const updateHrefLink = getContext("updateHref");
-  updateHrefLink("/submit/");
-  let updateText = getContext("text");
-  updateText("submit");
 </script>
 
 <InputField
@@ -24,6 +19,7 @@
   description="Enter the amount of stake you would like to put. 
   (Minimum 25Tz)"
   inputType="numberInput"
+  bind:stake={stake}
 />
 
 <div class="lastButton">

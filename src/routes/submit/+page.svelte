@@ -3,18 +3,20 @@
   import TcButton from "../../lib/tcButton.svelte";
   import ArrowRight from "$lib/static/arrowRight.svelte";
   import { goto } from "$app/navigation";
+  import {contentSubmission} from "../formStore.js"
 
   let tmbImage = "";
   let content = "";
   let contentTitle = "";
 
   function handleSubmit(event) {
-    const data = {
-      tmbImage: tmbImage,
-      content: content,
-      contentTitle: contentTitle,
-    }
-    console.log(data);
+    contentSubmission.update((data) => {
+      data.tmbImage = tmbImage;
+      data.content = content;
+      data.contentTitle = contentTitle;
+      return data;
+    });
+    console.log($contentSubmission);
     navigate();
   }
 
@@ -23,7 +25,6 @@
   }
 </script>
 
-<form on:submit|preventDefault={handleSubmit}>
   <InputField
     title="Thumbnail Field"
     description="The thumbnail must be relevant to your topic."
@@ -43,7 +44,7 @@
     description="Your title must not be misleading, exaggerated, or clickbait."
     inputType="singleText"
     placeholder="The fall of the Roman Empire"
-    bind:contentTitle={contentTitle}
+    bind:singleTextValue={contentTitle}
   />
 
   <div class="lastButton">
@@ -51,7 +52,6 @@
       <ArrowRight />
     </TcButton>
   </div>
-</form>
 
 <style>
   .lastButton {

@@ -1,10 +1,6 @@
+import { blake2bHex } from 'blakejs';
 
+export const textToHash = '';
+const hash = blake2bHex(new TextEncoder().encode(textToHash));
 
-export const actions = {
-  default: async ({ request }) => {
-    const data = await request.formData();
-    const email = data.get("email");
-
-    return { success: true, email: email };
-  },
-};
+console.log(hash);

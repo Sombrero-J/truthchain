@@ -12,39 +12,14 @@
   let imgID = 0;
   export let multipleImage = false;
 
-  // import { contentSubmission } from "../../src/routes/submit/page.js";
-
   let contentID = 0;
   export let content = "";
   export let tmbImageFC = "";
   export let uploadedImage = [];
   let imgDetails = "";
   let refID = 0;
-  export let refURL = "";
-  let stake = 25;
-  export let contentTitle = "";
-
-  // $: contentObject = {
-  //   contentID: contentID,
-  //   tmbImage: tmbImage,
-  //   content: contentTitle,
-  //   title: title,
-  //   images: uploadedImage,
-  //   references: [
-  //     {
-  //       refID: refID,
-  //       refURL: refURL,
-  //     },
-  //   ],
-  //   stake: stake,
-  // };
-
-  // $: {
-  //   if (contentObject) {
-  //     contentSubmission.set(contentObject);
-  //     console.log($contentSubmission);
-  //   }
-  // }
+  export let stake = 25;
+  export let singleTextValue = "";
 
   function handleFileChange(event) {
     const file = event.target.files[0];
@@ -195,7 +170,7 @@
     <input
       type="text"
       id="stext-field"
-      bind:value={refURL}
+      bind:value={singleTextValue}
       {placeholder}
       required
     />

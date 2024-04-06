@@ -3,16 +3,17 @@
   import TcButton from "$lib/tcButton.svelte";
   import ArrowRight from "$lib/static/arrowRight.svelte";
   import { goto } from "$app/navigation";
+  import {contentSubmission} from "../../formStore.js"
 
   let uploadedImage = [];
   let refURL = "";
 
   function handleSubmit() {
-    const data = {
-      uploadedImage: uploadedImage,
-      refURL: refURL,
-    }
-    console.log(data);
+    contentSubmission.update((data) => {
+      data.images = uploadedImage;
+      data.references = refURL;
+      return data;
+    });
     navigate();
   }
   
@@ -34,7 +35,7 @@
     description="You must provide references or source of content."
     inputType="singleText"
     placeholder="https://www.example.com"
-    bind:refURL={refURL}
+    bind:singleTextValue={refURL}
   />
 
   <div class="lastButton">
