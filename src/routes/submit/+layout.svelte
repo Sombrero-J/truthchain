@@ -6,6 +6,19 @@
   import Hamburger from "$lib/static/hamburger.svelte";
   import TcButton from "$lib/tcButton.svelte";
   import ArrowRight from "../../lib/static/arrowRight.svelte";
+  import { goto } from "$app/navigation";
+  import { writable } from "svelte/store";
+  import { setContext } from "svelte";
+
+  const href = writable("");
+  const text = writable("");
+  setContext("updateHref", href.set);
+  setContext("text", text.set);
+
+  let currentHref = "";
+  href.subscribe((value) => {
+    currentHref = value;
+  });
 </script>
 
 <div class="sideBar">
@@ -15,29 +28,26 @@
       title="post submission"
       subtitles={[
         { name: "the content", link: "/submit" },
+        { name: "the proof", link: "/submit/proof" },
         { name: "the stake", link: "/submit/stake" },
-        { name: "the submission", link: "/submit/finalSubmission" },
       ]}
     />
   </div>
-  <div class="sideBarFooter">
-  </div>
+  <!-- <div class="sideBarFooter"></div> -->
 </div>
-<div class="mainBar">
-  <nav>
-    <PageTitle title="the content" />
-    <div class="navSide">
-      <SearchBar />
-      <Hamburger />
+<div class="bigBody">
+  <div class="mainBar">
+    <nav>
+      <PageTitle title="the content" />
+      <div class="navSide">
+        <SearchBar />
+        <Hamburger />
+      </div>
+    </nav>
+    <div class="form-section">
+      <slot />
     </div>
-  </nav>
-  <div class="form-section">
-    <slot />
-  </div>
-  <div class="lastButton">
-    <TcButton text="the stake">
-      <ArrowRight />
-    </TcButton>
+    
   </div>
   <footer>
     <p>copyright 2024 © truthchain</p>
@@ -47,6 +57,11 @@
 <!-- </div> -->
 
 <style lang="scss">
+  .bigBody {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
   .sideBar {
     position: fixed;
     display: flex;
@@ -64,7 +79,8 @@
 
   .mainBar {
     margin-left: 22rem;
-    height: 100%;
+    // min-height: 100dvh;
+    flex-grow: 1;
     // padding: 0 2rem;
     display: flex;
     flex-direction: column;
@@ -87,7 +103,7 @@
   }
 
   .form-section {
-    width: 55%;
+    // width: 55%;
     display: flex;
     flex-direction: column;
     gap: 3rem;
@@ -102,21 +118,10 @@
     justify-content: center;
     align-items: center;
     background-color: $secondary;
-    margin-top: 10rem;
     // position: absolute;
-    // bottom: 0;
+    // bottom: 0px;
+    margin-top: 10rem;
   }
 
-  .lastButton {
-    align-self: flex-end;
-    margin-right: 35rem;
-  }
-
-  .sideBarFooter {
-    width: 100%;
-    height: 50px;
-    background-color: $secondary;
-    position: absolute;
-    bottom: 0px;
-  }
+  
 </style>
