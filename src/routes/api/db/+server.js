@@ -2,6 +2,8 @@
 
 import { PrismaClient } from "@prisma/client";
 
+const prisma = new PrismaClient();
+
 // let imagesData = [];
 
 export async function POST({ request }) {
@@ -35,20 +37,34 @@ export async function POST({ request }) {
   );
 }
 
-const prisma = new PrismaClient();
+export async function GET() {
+  try {
+    const contents = await prisma.content.findMany({
+      include: {
+        images: true,
+        references: true,
+        author: true,
+      },
+    });
 
-// async function transformImage(imageUrl) {
-//   const response = await fetch(imageUrl);
-//   if (!response.ok) {
-//     throw new Error(`Failed to fetch the image: ${response.statusText}`);
-//   }
+    return new Response(JSON.stringify(contents), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    console.error("Failed to fetch contents:", error);
+    return new Response(JSON.stringify({ error: "Failed to fetch contents" }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+}
 
-//   // Convert the response to an ArrayBuffer
-//   const arrayBuffer = await response.arrayBuffer();
-//   // Convert ArrayBuffer to Buffer for Node.js (if needed)
-//   const imageBuffer = Buffer.from(arrayBuffer);
-//   return imageBuffer;
-// }
+
 
 async function ensureAuthorExists() {
   const authorName = "Dummy Author";
@@ -80,6 +96,7 @@ async function createContentWithRelations(contentObject) {
     data: {
       title: contentObject.contentTitle,
       contentText: contentObject.content,
+      thumbnailImg: contentObject.tmbImage,
       stake: contentObject.stake,
       approved: false, // Assuming new content is not approved by default
       author: {

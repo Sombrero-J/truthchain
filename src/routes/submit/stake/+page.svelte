@@ -3,6 +3,7 @@
   import TcButton from "$lib/tcButton.svelte";
   import { contentSubmission } from "../../formStore.js";
   import {setContext} from "svelte";
+  import {goto} from "$app/navigation";
 
   setContext("pageTitle", "the stake");
 
@@ -21,8 +22,13 @@
       },
       body: jsonBody,
     });
-
     const data = await response.json();
+    navigateToHome();
+  }
+
+  function navigateToHome(){
+    goto("/");
+
   }
 </script>
 

@@ -2,48 +2,78 @@
   import TcButton from "$lib/tcButton.svelte";
   import AnchorSVG from "$lib/static/anchor.svelte";
   import CrookSVG from "$lib/static/crook.svelte";
+  import Delete from "$lib/static/delete.svelte";
+  import { writable } from "svelte/store";
+  export let data;
+
+  let contents = writable(data.contents);
+
+  async function handleDelete(id) {
+    const response = await fetch(`/api/db/${id}`, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      contents.update((currentContents) => {
+        return currentContents.filter((content) => content.id !== id);
+      });
+    } else {
+      console.error("Failed to delete content");
+    }
+  }
 </script>
 
 <div class="bigBox">
-  <div class="title">Lorem ipsum dolor sit amet.</div>
-  <div class="date">03-05-2024</div>
-  <img
-    class="thumbnail"
-    src="https://static01.nyt.com/images/2013/07/07/world/07plane_7/07plane_7-superJumbo.jpg"
-    alt="plane crash"
-  />
-  <div class="text">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, vel.
-    Voluptas, magni labore corporis corrupti qui earum dolorum voluptate
-    incidunt adipisci, hic sit dolores voluptatum laborum aliquid quod rerum a
-    amet, explicabo itaque sed inventore nihil non. Nisi asperiores fuga unde
-    libero. Corporis accusamus debitis deleniti cupiditate asperiores dolorum
-    repellat quas ea doloribus alias necessitatibus laboriosam vel praesentium
-    perferendis vitae tempora, amet aliquid. Obcaecati ipsam voluptatum
-    repellendus, nam tempore perspiciatis, quas consequatur voluptates ullam
-    error repellat tempora suscipit id laborum sint eaque facilis dolorum nisi,
-    magni cum ut nemo. Aliquam enim reprehenderit voluptatibus placeat accusamus
-    soluta laboriosam sed quas delectus qui itaque esse veniam fuga explicabo
-    natus deleniti, at voluptatem earum amet eum nam in ex sunt. Dolor,
-    perspiciatis. Accusantium nobis sint numquam quas, amet provident soluta a
-    obcaecati natus magni odit adipisci dolorum iusto eum fuga! Mollitia alias
-    molestiae ipsum! Atque dolor placeat excepturi eum totam? Hic, perspiciatis
-    commodi!
-  </div>
-  <div class="source">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore quisquam
-    laborum commodi temporibus sit corrupti possimus fuga reiciendis pariatur
-    distinctio. Consequuntur eos totam, accusamus, nihil, nisi ipsum iusto sed
-    quia ipsa reprehenderit magni molestiae velit perspiciatis rerum aperiam.
-    Unde, facere!
-  </div>
-  <div class="buttonBox">
-    <button>Hitch</button>
-    <button>Crook</button>
-  </div>
+  {#if data.contents.length === 0}
+    <div id="nocontent">No contents found</div>
+  {:else}
+    {#each data.contents as content (content.id)}
+      <div class="title">{content.title}</div>
+      <div class="date">{content.createdAt}</div>
+      <img
+        class="thumbnail"
+        src={content.thumbnailImg}
+        alt={content.images[0].text_details}
+      />
+      <div class="text">
+        {content.contentText}
+      </div>
+      <div class="source">
+        {content.references[0].link}
+        <div class="imageBox">
+          {#each content.images as image (image.id)}
+            <img
+              src={image.imageURL}
+              alt={image.text_details}
+              width="100"
+              height="100"
+            />
+            <p>{image.text_details}</p>
+          {/each}
+        </div>
+      </div>
+      <div class="buttonBox">
+        <button>Hitch</button>
+        <button>Crook</button>
+      </div>
+      <button class="deleteButton" on:click={() => handleDelete(content.id)}>
+        <Delete />
+      </button>
+    {/each}
+  {/if}
 </div>
 
 <style lang="scss">
+
+  .nocontent {
+    font-size: $fs-large;
+    font-weight: 700;
+  }
+  .deleteButton {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
   div {
     padding: 0.5em 1em;
     border-radius: $border-radius;
@@ -60,6 +90,7 @@
     gap: 0.5rem;
     background-color: rgb(242, 242, 242);
     box-shadow: 0 0 1rem rgb(0, 0, 0, 0.1);
+    position: relative;
   }
 
   .title {

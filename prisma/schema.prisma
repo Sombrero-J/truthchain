@@ -14,36 +14,37 @@ datasource db {
 }
 
 model Content {
-  id          Int      @id @default(autoincrement())
-  createdAt DateTime    @default(now())
-  title       String   @db.VarChar(255)
+  id          Int          @id @default(autoincrement())
+  createdAt   DateTime     @default(now())
+  thumbnailImg String?
+  title       String       @db.VarChar(255)
   contentText String
-  approved    Boolean  @default(false)   
-  stake       Int      
-  author_id   Int      
-  images      Image[]  
+  approved    Boolean      @default(false)
+  stake       Int
+  author_id   Int
+  images      Image[]
   references  References[]
-  author    Author   @relation(fields: [author_id], references: [id])
+  author      Author       @relation(fields: [author_id], references: [id])
 }
 
 model Image {
-  id          Int      @id @default(autoincrement())
-  imageURL   String    
-  content_id  Int
-  text_details String 
-  content     Content  @relation(fields: [content_id], references: [id])
+  id            Int      @id @default(autoincrement())
+  imageURL      String    
+  content_id    Int
+  text_details  String 
+  content       Content  @relation(fields: [content_id], references: [id], onDelete: Cascade)
 }
 
 model References {
-  id         Int    @id @default(autoincrement())
-  link       String
-  content_id Int
-  content    Content @relation(fields: [content_id], references: [id])
+  id          Int    @id @default(autoincrement())
+  link        String
+  content_id  Int
+  content     Content @relation(fields: [content_id], references: [id], onDelete: Cascade)
 }
 
 model Author {
-  id          Int      @id @default(autoincrement())
-  name        String
-  address     String   @unique
-  contents    Content[]
+  id        Int       @id @default(autoincrement())
+  name      String
+  address   String    @unique
+  contents  Content[]
 }
