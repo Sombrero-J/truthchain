@@ -10,31 +10,40 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:jaydenchan@localhost:5432/contentdata?schema=public"
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+model Content {
+  id          Int      @id @default(autoincrement())
+  createdAt DateTime    @default(now())
+  title       String   @db.VarChar(255)
+  contentText String
+  approved    Boolean  @default(false)   
+  stake       Int      
+  author_id   Int      
+  images      Image[]  
+  references  References[]
+  author    Author   @relation(fields: [author_id], references: [id])
 }
 
-model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
+model Image {
+  id          Int      @id @default(autoincrement())
+  imageData   Bytes    
+  content_id  Int
+  text_details String 
+  content     Content  @relation(fields: [content_id], references: [id])
 }
 
-model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
+model References {
+  id         Int    @id @default(autoincrement())
+  link       String
+  content_id Int
+  content    Content @relation(fields: [content_id], references: [id])
+}
+
+model Author {
+  id          Int      @id @default(autoincrement())
+  name        String
+  address     String
+  contents    Content[]
 }

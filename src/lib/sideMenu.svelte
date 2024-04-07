@@ -1,17 +1,22 @@
 <script>
-  export let title;
   export let subtitles;
+
+  let selected = "Home";
+
+  function handleClick(st) {
+    selected = st.name;
+  }
 </script>
 
 <div class="bigBox">
   <div class="titleBox">
     <h2>
-      {title}
+      {selected}
     </h2>
   </div>
   <div class="subtitlesBox">
-    {#each subtitles as st}
-      <a href={st.link}>{st.name}</a>
+    {#each subtitles as st (st.name)}
+      <a href={st.link} class:bigTitle={st.bigTitle} on:click={() => handleClick(st)}>{st.name}</a>
     {/each}
   </div>
 </div>
@@ -28,6 +33,10 @@
 
   .titleBox {
     max-width: 12.5rem;
+  }
+
+  .bigTitle {
+    font-size: 1.125rem;
   }
 
   h2 {

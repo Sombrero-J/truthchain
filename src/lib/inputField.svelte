@@ -1,5 +1,4 @@
 <script>
-  import TcButton from "./tcButton.svelte";
   import AddSVG from "$lib/static/add.svelte";
   import ReuploadSVG from "$lib/static/reupload.svelte";
   import UploadSVG from "$lib/static/upload.svelte";
@@ -73,7 +72,8 @@
         type="file"
         id="file-upload"
         on:change={(e) => reloadThumbnail(e)}
-        accept="image/png, image/jpeg"
+        accept="image/*"
+        required
       />
     {:else if uploadedImage.length > 0}
       <div class="imageGallery">
@@ -104,6 +104,7 @@
                     id="file-upload"
                     on:change={(e) => reloadImage(e, image.imgID)}
                     accept="image/png, image/jpeg"
+                    required
                   />
                 </div>
               </div>
@@ -120,6 +121,7 @@
           id="file-add"
           on:change={handleFileChange}
           accept="image/png, image/jpeg"
+          required
         />
       {/if}
     {:else}
@@ -133,6 +135,7 @@
           id="file-upload"
           on:change={handleFileChange}
           accept="image/png, image/jpeg"
+          required
         />
       </div>
     {/if}
@@ -157,7 +160,6 @@
       min="20"
       placeholder="minimum: 20"
       bind:value={stake}
-      step="20"
       required
     />
   {:else if inputType === "buttonInput"}
@@ -270,6 +272,10 @@
     border-radius: $border-radius;
     border: 1px solid $secondary;
     padding: 0.5em;
+  }
+
+  input[type="number"]:focus {
+    outline: none;
   }
 
   textarea {

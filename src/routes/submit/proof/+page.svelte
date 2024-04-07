@@ -4,6 +4,9 @@
   import ArrowRight from "$lib/static/arrowRight.svelte";
   import { goto } from "$app/navigation";
   import {contentSubmission} from "../../formStore.js"
+  import {setContext} from "svelte";
+
+  setContext("pageTitle", "the proof");
 
   let uploadedImage = [];
   let refURL = "";

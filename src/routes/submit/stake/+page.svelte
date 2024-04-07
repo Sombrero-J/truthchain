@@ -1,34 +1,54 @@
 <script>
   import InputField from "$lib/inputField.svelte";
   import TcButton from "$lib/tcButton.svelte";
-  import {contentSubmission} from "../../formStore.js"
+  import { contentSubmission } from "../../formStore.js";
+  import {setContext} from "svelte";
 
-  let stake = 0;
+  setContext("pageTitle", "the stake");
 
-  function handleSubmit() {
+  let stake = 25;
+
+  async function handleSubmit() {
     contentSubmission.update((data) => {
       data.stake = stake;
       return data;
     });
-    console.log($contentSubmission);
+    const jsonBody = JSON.stringify($contentSubmission);
+    const response = await fetch("/api/db", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonBody,
+    });
+
+    const data = await response.json();
   }
 </script>
 
-<InputField
-  title="Stake Field"
-  description="Enter the amount of stake you would like to put. 
+<form on:submit|preventDefault={handleSubmit}>
+  <InputField
+    title="Stake Field"
+    description="Enter the amount of stake you would like to put. 
   (Minimum 25Tz)"
-  inputType="numberInput"
-  bind:stake={stake}
-/>
+    inputType="numberInput"
+    bind:stake
+  />
 
-<div class="lastButton">
-  <TcButton text="submit" action={handleSubmit} />
-</div>
+  <div class="lastButton">
+    <TcButton text="submit" type="submit" />
+  </div>
+</form>
 
 <style>
+  form {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    width: 40%;
+  }
   .lastButton {
     align-self: flex-end;
-    margin-right: 35rem;
+    margin-top: 5rem;
   }
 </style>

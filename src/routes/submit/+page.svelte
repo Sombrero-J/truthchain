@@ -3,7 +3,10 @@
   import TcButton from "../../lib/tcButton.svelte";
   import ArrowRight from "$lib/static/arrowRight.svelte";
   import { goto } from "$app/navigation";
-  import {contentSubmission} from "../formStore.js"
+  import { contentSubmission } from "../formStore.js";
+  import {setContext} from "svelte";
+
+  setContext("pageTitle", "the content");
 
   let tmbImage = "";
   let content = "";
@@ -25,33 +28,33 @@
   }
 </script>
 
-  <InputField
-    title="Thumbnail Field"
-    description="The thumbnail must be relevant to your topic."
-    inputType="image"
-    bind:tmbImageFC={tmbImage}
-  />
+<InputField
+  title="Thumbnail Field"
+  description="The thumbnail must be relevant to your topic."
+  inputType="image"
+  bind:tmbImageFC={tmbImage}
+/>
 
-  <InputField
-    title="Content Field"
-    description="Your content must obey the rules written in the content rules section."
-    inputType="text"
-    bind:content={content}
-  />
+<InputField
+  title="Content Field"
+  description="Your content must obey the rules written in the content rules section."
+  inputType="text"
+  bind:content
+/>
 
-  <InputField
-    title="Title Field"
-    description="Your title must not be misleading, exaggerated, or clickbait."
-    inputType="singleText"
-    placeholder="The fall of the Roman Empire"
-    bind:singleTextValue={contentTitle}
-  />
+<InputField
+  title="Title Field"
+  description="Your title must not be misleading, exaggerated, or clickbait."
+  inputType="singleText"
+  placeholder="The fall of the Roman Empire"
+  bind:singleTextValue={contentTitle}
+/>
 
-  <div class="lastButton">
-    <TcButton text="the proof" action={handleSubmit}>
-      <ArrowRight />
-    </TcButton>
-  </div>
+<div class="lastButton">
+  <TcButton text="the proof" action={handleSubmit}>
+    <ArrowRight />
+  </TcButton>
+</div>
 
 <style>
   .lastButton {
