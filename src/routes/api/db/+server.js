@@ -2,16 +2,16 @@
 
 import { PrismaClient } from "@prisma/client";
 
-let imagesData = [];
+// let imagesData = [];
 
 export async function POST({ request }) {
   const data = await request.json();
-  imagesData = await Promise.all(
-    data.images.map(async (img) => ({
-      imageData: await transformImage(img.imgURL),
-      text_details: img.imgDetails,
-    }))
-  );
+  // imagesData = await Promise.all(
+  //   data.images.map(async (img) => ({
+  //     imageData: await transformImage(img.imgURL),
+  //     text_details: img.imgDetails,
+  //   }))
+  // );
   createContentWithRelations(data)
     .catch((e) => {
       throw e;
@@ -19,7 +19,7 @@ export async function POST({ request }) {
     .finally(async () => {
       await prisma.$disconnect();
     });
-  console.log("SUCCESSSSSSSS");
+  // console.log("SUCCESSSSSSSS");
   return new Response(
     JSON.stringify({
       status: "success",
@@ -37,21 +37,44 @@ export async function POST({ request }) {
 
 const prisma = new PrismaClient();
 
-async function transformImage(imageUrl) {
-  const response = await fetch(imageUrl);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch the image: ${response.statusText}`);
+// async function transformImage(imageUrl) {
+//   const response = await fetch(imageUrl);
+//   if (!response.ok) {
+//     throw new Error(`Failed to fetch the image: ${response.statusText}`);
+//   }
+
+//   // Convert the response to an ArrayBuffer
+//   const arrayBuffer = await response.arrayBuffer();
+//   // Convert ArrayBuffer to Buffer for Node.js (if needed)
+//   const imageBuffer = Buffer.from(arrayBuffer);
+//   return imageBuffer;
+// }
+
+async function ensureAuthorExists() {
+  const authorName = "Dummy Author";
+  const authorAddress = "dummy_address";
+
+  let author = await prisma.author.findUnique({
+    where: {
+      name: authorName,
+      address: authorAddress,
+    },
+  });
+
+  if (!author) {
+    author = await prisma.author.create({
+      data: {
+        name: authorName,
+        address: authorAddress,
+      },
+    });
   }
 
-  // Convert the response to an ArrayBuffer
-  const arrayBuffer = await response.arrayBuffer();
-  // Convert ArrayBuffer to Buffer for Node.js (if needed)
-  const imageBuffer = Buffer.from(arrayBuffer);
-  return imageBuffer;
+  return author.id;
 }
 
 async function createContentWithRelations(contentObject) {
-  const authorId = 1; // Example author_id, replace with the actual author_id
+  const authorId = await ensureAuthorExists();
 
   const content = await prisma.content.create({
     data: {
@@ -63,7 +86,10 @@ async function createContentWithRelations(contentObject) {
         connect: { id: authorId },
       },
       images: {
-        create: imagesData,
+        create: contentObject.images.map((img) => ({
+          imageURL: img.imgURL,
+          text_details: img.imgDetails,
+        })),
       },
       references: {
         create: contentObject.references.split(",").map((ref) => ({

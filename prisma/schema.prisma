@@ -28,7 +28,7 @@ model Content {
 
 model Image {
   id          Int      @id @default(autoincrement())
-  imageData   Bytes    
+  imageURL   String    
   content_id  Int
   text_details String 
   content     Content  @relation(fields: [content_id], references: [id])
@@ -44,6 +44,6 @@ model References {
 model Author {
   id          Int      @id @default(autoincrement())
   name        String
-  address     String
+  address     String   @unique
   contents    Content[]
 }
