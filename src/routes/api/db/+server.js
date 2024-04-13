@@ -21,7 +21,6 @@ export async function POST({ request }) {
     .finally(async () => {
       await prisma.$disconnect();
     });
-  // console.log("SUCCESSSSSSSS");
   return new Response(
     JSON.stringify({
       status: "success",

@@ -7,6 +7,7 @@
   export let data;
 
   let contents = writable(data.contents);
+  // $: contents.set(data.contents);
 
   async function handleDelete(id) {
     const response = await fetch(`/api/db/${id}`, {
@@ -22,11 +23,11 @@
   }
 </script>
 
-<div class="bigBox">
-  {#if data.contents.length === 0}
-    <div id="nocontent">No contents found</div>
-  {:else}
-    {#each data.contents as content (content.id)}
+{#if $contents.length === 0}
+  <div id="nocontent">No contents found</div>
+{:else}
+  {#each $contents as content (content.id)}
+    <div class="bigBox">
       <div class="title">{content.title}</div>
       <div class="date">{content.createdAt}</div>
       <img
@@ -58,13 +59,13 @@
       <button class="deleteButton" on:click={() => handleDelete(content.id)}>
         <Delete />
       </button>
-    {/each}
-  {/if}
-</div>
+    </div>
+  {/each}
+{/if}
 
 <style lang="scss">
-
-  .nocontent {
+  #nocontent {
+    font-family: $ff-primary;
     font-size: $fs-large;
     font-weight: 700;
   }

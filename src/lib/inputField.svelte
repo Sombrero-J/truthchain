@@ -21,24 +21,32 @@
   export let singleTextValue = "";
 
   function handleFileChange(event) {
-    const file = event.target.files[0];
-    if (file && (file.type === "image/png" || file.type === "image/jpeg")) {
-      if (multipleImage) {
-        let fileObject = {
-          imgID: imgID,
-          imgURL: URL.createObjectURL(file),
-          imgDetails: imgDetails,
-        };
-        uploadedImage = [...uploadedImage, fileObject];
-        imgID++;
-      } else {
-        tmbImageFC = URL.createObjectURL(file);
-      }
-      isUploaded = true;
-    } else {
-      console.error("File is not a PNG or JPEG");
+        const file = event.target.files[0];
+        if (file && (file.type === "image/png" || file.type === "image/jpeg")) {
+            const reader = new FileReader();
+
+            // FileReader is asynchronous, handle logic in onload
+            reader.onload = () => {
+                const base64String = reader.result;
+
+                if (multipleImage) {
+                    let fileObject = {
+                        imgID: imgID++,
+                        imgURL: base64String,
+                        imgDetails: imgDetails,
+                    };
+                    uploadedImage = [...uploadedImage, fileObject];
+                } else {
+                    tmbImageFC = base64String;
+                }
+                isUploaded = true;
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            console.error("File is not a PNG or JPEG");
+        }
     }
-  }
 
   function reloadImage(event, id) {
     const file = event.target.files[0];
