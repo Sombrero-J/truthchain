@@ -1,8 +1,8 @@
 <script>
-  import TcButton from "$lib/tcButton.svelte";
-  import AnchorSVG from "$lib/static/anchor.svelte";
-  import CrookSVG from "$lib/static/crook.svelte";
-  import Delete from "$lib/static/delete.svelte";
+  import TcButton from "$lib/components/tcButton.svelte";
+  import AnchorSVG from "$lib/svg/anchor.svelte";
+  import CrookSVG from "$lib/svg/crook.svelte";
+  import Delete from "$lib/svg/delete.svelte";
   import { writable } from "svelte/store";
   export let data;
 
@@ -62,6 +62,8 @@
     </div>
   {/each}
 {/if}
+
+<TcButton text="Connect to Wallet" />
 
 <style lang="scss">
   #nocontent {

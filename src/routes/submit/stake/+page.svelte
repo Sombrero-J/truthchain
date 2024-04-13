@@ -1,6 +1,6 @@
 <script>
-  import InputField from "$lib/inputField.svelte";
-  import TcButton from "$lib/tcButton.svelte";
+  import InputField from "$lib/components/inputField.svelte";
+  import TcButton from "$lib/components/tcButton.svelte";
   import { contentSubmission } from "../../formStore.js";
   import {setContext} from "svelte";
   import {goto} from "$app/navigation";

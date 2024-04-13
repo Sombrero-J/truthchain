@@ -1,5 +1,5 @@
 <script>
-  import SearchSVG from "$lib/static/search.svelte";
+  import SearchSVG from "$lib/svg/search.svelte";
 </script>
 
 <div class="searchBox">

@@ -1,19 +1,10 @@
-// import { blake2bHex } from "blakejs";
-
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// let imagesData = [];
-
 export async function POST({ request }) {
   const data = await request.json();
-  // imagesData = await Promise.all(
-  //   data.images.map(async (img) => ({
-  //     imageData: await transformImage(img.imgURL),
-  //     text_details: img.imgDetails,
-  //   }))
-  // );
+
   createContentWithRelations(data)
     .catch((e) => {
       throw e;
@@ -120,7 +111,3 @@ async function createContentWithRelations(contentObject) {
   });
   console.log(content);
 }
-
-// export const textToHash = "";
-// const hash = blake2bHex(new TextEncoder().encode(textToHash));
-// console.log(hash);

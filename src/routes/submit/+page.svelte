@@ -1,10 +1,10 @@
 <script>
-  import InputField from "../../lib/inputField.svelte";
-  import TcButton from "../../lib/tcButton.svelte";
-  import ArrowRight from "$lib/static/arrowRight.svelte";
+  import InputField from "$lib/components/inputField.svelte";
+  import TcButton from "$lib/components/tcButton.svelte";
+  import ArrowRight from "$lib/svg/arrowRight.svelte";
   import { goto } from "$app/navigation";
   import { contentSubmission } from "../formStore.js";
-  import {setContext} from "svelte";
+  import { setContext } from "svelte";
 
   setContext("pageTitle", "the content");
 

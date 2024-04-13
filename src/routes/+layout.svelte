@@ -1,16 +1,15 @@
 <script>
-  import HomeButton from "$lib/homeButton.svelte";
-  import SideMenu from "$lib/sideMenu.svelte";
-  import PageTitle from "$lib/pageTitle.svelte";
-  import SearchBar from "../lib/searchBar.svelte";
-  import Hamburger from "$lib/static/hamburger.svelte";
+  import HomeButton from "$lib/components/homeButton.svelte";
+  import SideMenu from "$lib/components/sideMenu.svelte";
+  import PageTitle from "$lib/components/pageTitle.svelte";
+  import SearchBar from "../lib/components/searchBar.svelte";
+  import Hamburger from "$lib/svg/hamburger.svelte";
 </script>
 
 <div class="sideBar">
   <HomeButton />
   <div class="sidemenu">
     <SideMenu
-      title="content submission"
       subtitles={[
         {name: "Home", link: "/", bigTitle: true},
         { name: "Rules", link: "/rules", bigTitle: true},
