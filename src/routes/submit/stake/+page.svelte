@@ -15,7 +15,7 @@
       return data;
     });
     const jsonBody = JSON.stringify($contentSubmission);
-    const response = await fetch("/api/db", {
+    const response = await fetch("../../api", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
